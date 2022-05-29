@@ -9,11 +9,10 @@
     <string name="password">Password</string>
     <string name="email">Email</string>
     <string name="name">Name</string>
-    <string name="buat_akun">Buat Akun</string>
     <string name="icon_cuanpah">Icon Cuanpah</string>
     <string name="masuk">Masuk</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="masuk">Masuk</string>
     <string name="belum_memiliki_akun">Belum memiliki akun?</string>
+    <string name="splash_description">Mari bergabung dengan Daur Uang untuk menciptakan lingkungan yang lebih baik</string>
+    <string name="selamat_datang">Selamat Datang!</string>
+    <string name="logo">Logo</string>
 </resources>
