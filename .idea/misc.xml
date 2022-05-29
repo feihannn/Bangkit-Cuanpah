@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/rounded_button.xml" value="0.2535" />
+        <entry key="app/src/main/res/drawable/rounded_edittext.xml" value="0.2535" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2776268115942029" />
       </map>
     </option>
