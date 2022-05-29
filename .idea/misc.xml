@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.185" />
+        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.185" />
+        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.185" />
+        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/drawable/rounded_button.xml" value="0.185" />
+        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/drawable/rounded_edittext.xml" value="0.185" />
+        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/layout/activity_login.xml" value="0.264" />
+        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/layout/activity_main.xml" value="0.176" />
+        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/layout/activity_register.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/layout/activity_splash.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/layout/fragment_dashboard.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/layout/fragment_home.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/layout/fragment_notifications.xml" value="0.22826086956521738" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2776268115942029" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

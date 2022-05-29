@@ -15,4 +15,8 @@
     <string name="splash_description">Mari bergabung dengan Daur Uang untuk menciptakan lingkungan yang lebih baik</string>
     <string name="selamat_datang">Selamat Datang!</string>
     <string name="logo">Logo</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>
