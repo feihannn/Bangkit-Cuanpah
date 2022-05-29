@@ -3,8 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/drawable/rounded_button.xml" value="0.2535" />
-        <entry key="app/src/main/res/drawable/rounded_edittext.xml" value="0.2535" />
+        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/drawable/rounded_button.xml" value="0.185" />
+        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/drawable/rounded_edittext.xml" value="0.185" />
+        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/layout/activity_login.xml" value="0.4" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2776268115942029" />
       </map>
     </option>
