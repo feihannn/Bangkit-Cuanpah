@@ -22,6 +22,9 @@ class LoginActivity : AppCompatActivity() {
         binding.toRegisterLogin.setOnClickListener {
             startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
         }
+        binding.buttonLogin.setOnClickListener {
+            startActivity(Intent(this,MainActivity::class.java))
+        }
     }
 
     private fun setupView() {
