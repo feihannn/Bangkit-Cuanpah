@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
 import com.exercise.cuanpah.databinding.ActivitySplashBinding
+import com.exercise.cuanpah.ui.register.RegisterActivity
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.exercise.cuanpah
+package com.exercise.cuanpah.ui.login
 
 import android.content.Intent
 import android.os.Build
@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
+import com.exercise.cuanpah.ui.main.MainActivity
 import com.exercise.cuanpah.databinding.ActivityLoginBinding
+import com.exercise.cuanpah.ui.register.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -23,7 +25,7 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
         }
         binding.buttonLogin.setOnClickListener {
-            startActivity(Intent(this,MainActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 
