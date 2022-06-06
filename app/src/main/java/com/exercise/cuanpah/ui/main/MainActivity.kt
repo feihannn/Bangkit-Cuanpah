@@ -1,12 +1,16 @@
-package com.exercise.cuanpah
+package com.exercise.cuanpah.ui.main
 
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowInsets
+import android.view.WindowManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.exercise.cuanpah.R
 import com.exercise.cuanpah.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -15,9 +19,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupView()
 
         val navView: BottomNavigationView = binding.navView
 
@@ -32,4 +36,18 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
+
+    private fun setupView() {
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
+        supportActionBar?.hide()
+    }
+
 }
