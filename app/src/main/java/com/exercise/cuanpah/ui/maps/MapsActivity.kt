@@ -1,36 +1,97 @@
 package com.exercise.cuanpah.ui.maps
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
-import com.exercise.cuanpah.R
+import android.widget.ArrayAdapter
+import android.widget.SearchView
+import android.widget.Spinner
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.exercise.cuanpah.databinding.ActivityMapsBinding
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import java.io.IOException
+
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+    private lateinit var searchView:SearchView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        var marker:Marker?=null
         super.onCreate(savedInstanceState)
 
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupView()
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        searchView = binding.searchLokasi
+
         val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
+            .findFragmentById(com.exercise.cuanpah.R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                val location: String = searchView.query.toString()
+                var addressList: List<Address>? = null
+
+                if (true) {
+                    val geocoder = Geocoder(this@MapsActivity)
+                    try {
+                        addressList = geocoder.getFromLocationName(location, 1)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                    val address = addressList!![0]
+
+                    marker?.remove()
+                    val latLng = LatLng(address.latitude, address.longitude)
+                    marker=mMap.addMarker(MarkerOptions().position(latLng).title(location))
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+    }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                getMyLocation()
+            }
+        }
+    private fun getMyLocation() {
+        if (ContextCompat.checkSelfPermission(
+                this.applicationContext,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            mMap.isMyLocationEnabled = true
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
     }
 
     private fun setupView() {
@@ -44,14 +105,31 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             )
         }
         supportActionBar?.hide()
+
+        //Setting for dropdown menu
+        val spinner: Spinner = findViewById(com.exercise.cuanpah.R.id.jenisSampahDropdown)
+        ArrayAdapter.createFromResource(
+            this,
+            com.exercise.cuanpah.R.array.trash_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
+        
+        //Setting hint for edit text
+        binding.lokasiAndaPlaceholder.hint = "Cari lokasi Anda"
+        binding.beratInputText.hint="Berat Sampah"
+
+
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        mMap.uiSettings.isZoomControlsEnabled = true
+        mMap.uiSettings.isIndoorLevelPickerEnabled = true
+
+        getMyLocation()
     }
 }
