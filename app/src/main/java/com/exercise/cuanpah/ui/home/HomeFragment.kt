@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import com.exercise.cuanpah.camera.CameraActivity
 import com.exercise.cuanpah.databinding.FragmentHomeBinding
 import com.exercise.cuanpah.ui.maps.MapsActivity
 
@@ -30,7 +30,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.pindaiSampahButton.setOnClickListener {
-
+            startActivity(Intent(context, CameraActivity::class.java))
         }
 
         return binding.root
