@@ -1,13 +1,12 @@
 package com.exercise.cuanpah.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.exercise.cuanpah.data.UserRepository
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(private val userRepository: UserRepository) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-    val text: LiveData<String> = _text
+    fun getUser() = userRepository.getUser()
+
+    fun logout() = userRepository.logout()
+
 }

@@ -44,7 +44,7 @@ class UserRepository(
 
     // func
     fun loginUser(email: String, password: String): LiveData<String?> {
-        apiService.loginUser(email, password).enqueue(object : Callback<LoginResponse> {
+        apiService.loginUser(LoginData(email, password)).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
@@ -68,7 +68,7 @@ class UserRepository(
     }
 
     fun registerUser(email: String, password: String, name: String): LiveData<String?> {
-        apiService.registerUser(email, password, name).enqueue(object : Callback<RegisterResponse> {
+        apiService.registerUser(RegisterData(email, password, name)).enqueue(object : Callback<RegisterResponse> {
             override fun onResponse(
                 call: Call<RegisterResponse>,
                 response: Response<RegisterResponse>
@@ -87,7 +87,7 @@ class UserRepository(
 
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
                 message.value = null
-                Log.e("Register", call.toString())
+                Log.e("Register", "GAGAL")
             }
 
         })
