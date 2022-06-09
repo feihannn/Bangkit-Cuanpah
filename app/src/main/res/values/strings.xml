@@ -22,4 +22,16 @@
     <string name="panggil_kurir">Panggil Kurir</string>
     <string name="pindai_sampah">Pindai Sampah</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="request_permission">This sample needs camera and storage permission.</string>
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+    <string name="intro_message">
+        <![CDATA[
+
+
+            This sample demonstrates the basic use of Camera2 API. Check the source code to see how
+            you can display camera preview and take pictures.
+
+
+        ]]>
+    </string>
 </resources>
