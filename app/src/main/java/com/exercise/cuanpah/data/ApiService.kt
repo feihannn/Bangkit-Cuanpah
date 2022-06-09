@@ -2,8 +2,7 @@ package com.exercise.cuanpah.data
 
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Body
 import retrofit2.http.POST
 
 data class RegisterResponse(
@@ -36,19 +35,22 @@ data class LoginResponse(
 
 
 interface ApiService {
-    @FormUrlEncoded
-    @POST("/register")
-    fun registerUser(
-        @Field("email") email: String,
-        @Field("password") password: String,
-        @Field("name") name: String
-    ) : Call<RegisterResponse>
 
-    @FormUrlEncoded
+    @POST("/register")
+    fun registerUser(@Body registerData: RegisterData ) : Call<RegisterResponse>
+
     @POST("/login")
-    fun loginUser(
-        @Field("email") email: String,
-        @Field("password") password: String
-    ) : Call<LoginResponse>
+    fun loginUser(@Body loginData: LoginData) : Call<LoginResponse>
 
 }
+
+data class RegisterData(
+    val email: String,
+    val password: String,
+    val name: String
+)
+
+data class LoginData(
+    val email: String,
+    val password: String
+)
