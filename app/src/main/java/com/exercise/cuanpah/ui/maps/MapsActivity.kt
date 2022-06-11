@@ -1,11 +1,10 @@
 package com.exercise.cuanpah.ui.maps
 
+import android.content.Context
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
-import android.preference.PreferenceManager.getDefaultSharedPreferences
-import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.ArrayAdapter
@@ -13,10 +12,16 @@ import android.widget.SearchView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
 import com.exercise.cuanpah.data.ApiConfig
 import com.exercise.cuanpah.data.OrderData
 import com.exercise.cuanpah.data.OrderResponse
+import com.exercise.cuanpah.data.UserPreference
 import com.exercise.cuanpah.databinding.ActivityMapsBinding
+import com.exercise.cuanpah.ui.ViewModelFactory
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -30,11 +35,14 @@ import retrofit2.Response
 import java.io.IOException
 
 
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
     private lateinit var searchView:SearchView
+    private lateinit var mapsViewModel: MapsViewModel
     private var latGlobal :Double=0.0
     private var lonGlobal :Double=0.0
 
@@ -42,6 +50,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         var marker:Marker?=null
         super.onCreate(savedInstanceState)
+
+        mapsViewModel = ViewModelProvider(
+            this,
+            ViewModelFactory(UserPreference.getInstance(dataStore), "")
+        )[MapsViewModel::class.java]
+
+
 
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -84,22 +99,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun order(){
-        val preference=getDefaultSharedPreferences(this)
-        val userId=preference.getInt("ID",0)
+        var userId=0
+        mapsViewModel.getUser().observe(this) {
+            userId= it.id
+        }
         val selectedTrash=binding.jenisSampahDropdown.selectedItem.toString()
         val inputWeight=binding.beratInputText.text.toString().toDouble()
 
+        Toast.makeText(this@MapsActivity,"$userId",Toast.LENGTH_SHORT).show()
 
-        Toast.makeText(this@MapsActivity,"Mohon Menunggu",Toast.LENGTH_SHORT).show()
-
-//        Toast.makeText(this@MapsActivity,"$latGlobal,$lonGlobal,$inputWeight,$selectedTrash",Toast.LENGTH_SHORT).show()
-        val orderService=ApiConfig().getApiService().requestOrder(OrderData(31,2,latGlobal,lonGlobal,"completed",inputWeight,selectedTrash))
+        val orderService=ApiConfig().getApiService().requestOrder(OrderData(userId,2,latGlobal,lonGlobal,"completed",inputWeight,selectedTrash))
         orderService.enqueue(object : Callback<OrderResponse>{
             override fun onResponse(
                 call: Call<OrderResponse>,
                 response: Response<OrderResponse>
             ) {
-//                Toast.makeText(this@MapsActivity, response.body()?.message ?: "body kosong",Toast.LENGTH_SHORT).show()
                 if(response.isSuccessful){
                     val responseBody=response.body()
                     if(responseBody!=null){
