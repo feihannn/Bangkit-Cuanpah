@@ -25,6 +25,9 @@ data class LoginResponse(
     @field:SerializedName("message")
     val message: String,
 
+    @field:SerializedName("id")
+    val id: Int,
+
     @field:SerializedName("email")
     val email: String,
 
