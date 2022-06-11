@@ -55,7 +55,7 @@
         android:id="@+id/allVouchers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="64dp"
         android:backgroundTint="@color/basic_green"
         android:text="@string/see_all_vouchers"
         android:textStyle="bold"

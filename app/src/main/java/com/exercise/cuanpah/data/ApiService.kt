@@ -82,8 +82,8 @@ interface ApiService {
     @GET("/requests")
     fun getOrder(@Field("user") user:Int) : Call<OrderResponse>
 
-    @GET("/userPoints")
-    fun getPoint(@Query("userId") userId: Int) : Call<GetPointResponse>
+    @GET("/userPoints/{userId}")
+    fun getPoint(@Path("userId") userId: Int) : Call<GetPointResponse>
 
     @POST("/userPoints")
     fun createPoint(@Body createPointData: CreatePointData) : Call<CreatePointResponse>

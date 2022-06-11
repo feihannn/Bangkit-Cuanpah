@@ -54,6 +54,11 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupAction()
+    }
+
     @SuppressLint("SetTextI18n")
     private fun setupAction() {
         homeViewModel = ViewModelProvider(

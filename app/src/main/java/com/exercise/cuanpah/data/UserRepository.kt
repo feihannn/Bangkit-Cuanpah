@@ -101,8 +101,10 @@ class UserRepository(
                         if (responseBody.data[0].points == 0) {
                             savePoint(0)
                             createPoint(userId, 0)
+                            Log.e("POINT", responseBody.data[0].points.toString())
                         } else {
                             savePoint(responseBody.data[0].points)
+                            Log.e("POINT", responseBody.data[0].points.toString())
                         }
                         message.value = response.code().toString()
                     }
