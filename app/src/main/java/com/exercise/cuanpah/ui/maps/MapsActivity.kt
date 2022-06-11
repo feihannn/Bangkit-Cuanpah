@@ -1,19 +1,21 @@
 package com.exercise.cuanpah.ui.maps
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
+import android.preference.PreferenceManager.getDefaultSharedPreferences
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.SearchView
 import android.widget.Spinner
-import androidx.activity.result.contract.ActivityResultContracts
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import com.exercise.cuanpah.data.ApiConfig
+import com.exercise.cuanpah.data.OrderData
+import com.exercise.cuanpah.data.OrderResponse
 import com.exercise.cuanpah.databinding.ActivityMapsBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -22,6 +24,9 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.IOException
 
 
@@ -30,6 +35,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
     private lateinit var searchView:SearchView
+    private var latGlobal :Double=0.0
+    private var lonGlobal :Double=0.0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +68,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 marker?.remove()
                 val latLng = LatLng(address.latitude, address.longitude)
+                latGlobal=address.latitude
+                lonGlobal=address.longitude
                 marker=mMap.addMarker(MarkerOptions().position(latLng).title(location))
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
                 return false
@@ -70,27 +79,66 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 return false
             }
         })
+
+        binding.pesanKurirButton.setOnClickListener { order() }
     }
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                getMyLocation()
+    private fun order(){
+        val preference=getDefaultSharedPreferences(this)
+        val userId=preference.getInt("ID",0)
+        val selectedTrash=binding.jenisSampahDropdown.selectedItem.toString()
+        val inputWeight=binding.beratInputText.text.toString().toDouble()
+
+
+        Toast.makeText(this@MapsActivity,"Mohon Menunggu",Toast.LENGTH_SHORT).show()
+
+//        Toast.makeText(this@MapsActivity,"$latGlobal,$lonGlobal,$inputWeight,$selectedTrash",Toast.LENGTH_SHORT).show()
+        val orderService=ApiConfig().getApiService().requestOrder(OrderData(31,2,latGlobal,lonGlobal,"completed",inputWeight,selectedTrash))
+        orderService.enqueue(object : Callback<OrderResponse>{
+            override fun onResponse(
+                call: Call<OrderResponse>,
+                response: Response<OrderResponse>
+            ) {
+//                Toast.makeText(this@MapsActivity, response.body()?.message ?: "body kosong",Toast.LENGTH_SHORT).show()
+                if(response.isSuccessful){
+                    val responseBody=response.body()
+                    if(responseBody!=null){
+                        Toast.makeText(this@MapsActivity,"$responseBody",Toast.LENGTH_SHORT).show()
+                    }
+                }else{
+                    Toast.makeText(this@MapsActivity,"responsenya gagal",Toast.LENGTH_SHORT).show()
+
+                }
+
             }
-        }
-    private fun getMyLocation() {
-        if (ContextCompat.checkSelfPermission(
-                this.applicationContext,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            mMap.isMyLocationEnabled = true
-        } else {
-            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-        }
+
+            override fun onFailure(call: Call<OrderResponse>, t: Throwable) {
+                Toast.makeText(this@MapsActivity,"Gagal",Toast.LENGTH_SHORT).show()
+            }
+
+        })
     }
+
+//    private val requestPermissionLauncher =
+//        registerForActivityResult(
+//            ActivityResultContracts.RequestPermission()
+//        ) { isGranted: Boolean ->
+//            if (isGranted) {
+//                getMyLocation()
+//            }
+//        }
+//    private fun getMyLocation() {
+//        if (ContextCompat.checkSelfPermission(
+//                this.applicationContext,
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) == PackageManager.PERMISSION_GRANTED
+//        ) {
+//            mMap.isMyLocationEnabled = true
+//
+//        } else {
+//            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+//        }
+//    }
 
     private fun setupView() {
         @Suppress("DEPRECATION")
@@ -128,6 +176,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.uiSettings.isIndoorLevelPickerEnabled = true
 
-        getMyLocation()
+//        getMyLocation()
     }
 }
