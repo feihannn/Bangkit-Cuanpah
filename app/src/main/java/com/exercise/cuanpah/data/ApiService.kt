@@ -39,8 +39,8 @@ data class LoginResponse(
 )
 
 data class OrderResponse(
-    @field:SerializedName("message")
-    val message: String,
+    @field:SerializedName("status")
+    val status: String,
 
     @field:SerializedName("data")
     val data:OrderResponseData
@@ -79,7 +79,9 @@ data class OrderData(
     val driverId:Int,
     val lat:Double,
     val lon:Double,
-    val status:String
+    val status:String,
+    val wasteWeight: Double,
+    val wasteType:String
 )
 
 data class OrderResponseData(
@@ -88,6 +90,8 @@ data class OrderResponseData(
     val lat:Double,
     val lon:Double,
     val status:String,
-    val requestTime:String,
-    val pickupTime:String
+    val request_time:String,
+    val pickup_time:String,
+    val wasteWeight: Double,
+    val wasteType: String
 )
