@@ -17,8 +17,8 @@
     <string name="logo">Logo</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_point">Point</string>
+    <string name="title_profile">Profile</string>
     <string name="panggil_kurir">Panggil Kurir</string>
     <string name="pindai_sampah">Pindai Sampah</string>
     <string name="title_activity_maps">MapsActivity</string>

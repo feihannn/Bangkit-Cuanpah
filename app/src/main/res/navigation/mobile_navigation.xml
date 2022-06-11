@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.exercise.cuanpah.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:name="com.exercise.cuanpah.ui.point.PointFragment"
+        android:label="@string/title_point"
+        tools:layout="@layout/fragment_point" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.exercise.cuanpah.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:name="com.exercise.cuanpah.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
