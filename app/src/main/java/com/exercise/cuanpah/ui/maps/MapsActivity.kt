@@ -51,20 +51,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 val location: String = searchView.query.toString()
                 var addressList: List<Address>? = null
 
-                if (true) {
-                    val geocoder = Geocoder(this@MapsActivity)
-                    try {
-                        addressList = geocoder.getFromLocationName(location, 1)
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                    }
-                    val address = addressList!![0]
-
-                    marker?.remove()
-                    val latLng = LatLng(address.latitude, address.longitude)
-                    marker=mMap.addMarker(MarkerOptions().position(latLng).title(location))
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
+                val geocoder = Geocoder(this@MapsActivity)
+                try {
+                    addressList = geocoder.getFromLocationName(location, 1)
+                } catch (e: IOException) {
+                    e.printStackTrace()
                 }
+                val address = addressList!![0]
+
+                marker?.remove()
+                val latLng = LatLng(address.latitude, address.longitude)
+                marker=mMap.addMarker(MarkerOptions().position(latLng).title(location))
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
                 return false
             }
 
