@@ -36,6 +36,12 @@ class UserRepository(
         }
     }
 
+    fun savePoint(point: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            pref.savePoint(point)
+        }
+    }
+
     // func
     fun loginUser(email: String, password: String): LiveData<String?> {
         apiService.loginUser(LoginData(email, password)).enqueue(object : Callback<LoginResponse> {
@@ -43,9 +49,8 @@ class UserRepository(
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
-                        login(UserModel(responseBody.name, responseBody.email, "", true, responseBody.token, responseBody.id))
+                        login(UserModel(responseBody.name, responseBody.email, "", true, responseBody.token, responseBody.id,0))
                         message.value = response.code().toString()
-                        Log.e("Login", responseBody.message)
                     }
                 } else {
                     message.value = response.code().toString()
@@ -54,7 +59,6 @@ class UserRepository(
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 message.value = null
-                Log.e("Register", "GAGAL")
             }
 
         })
@@ -71,7 +75,6 @@ class UserRepository(
                     val responseBody = response.body()
                     if (responseBody != null) {
                         message.value = response.code().toString()
-                        Log.e("Register", responseBody.message)
                     }
                 } else {
                     message.value = response.code().toString()
@@ -80,11 +83,62 @@ class UserRepository(
 
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
                 message.value = null
-                Log.e("Register", "GAGAL")
             }
 
         })
         return message
+    }
+
+    fun getPoint(userId: Int): LiveData<String?> {
+        apiService.getPoint(userId).enqueue(object : Callback<GetPointResponse> {
+            override fun onResponse(
+                call: Call<GetPointResponse>,
+                response: Response<GetPointResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if (responseBody!=null) {
+                        if (responseBody.data[0].points == 0) {
+                            savePoint(0)
+                            createPoint(userId, 0)
+                        } else {
+                            savePoint(responseBody.data[0].points)
+                        }
+                        message.value = response.code().toString()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetPointResponse>, t: Throwable) {
+                message.value = null
+            }
+
+        })
+        return message
+    }
+
+    fun createPoint(userId: Int, point: Int) {
+        apiService.createPoint(CreatePointData(userId,point)).enqueue(object : Callback<CreatePointResponse> {
+            override fun onResponse(
+                call: Call<CreatePointResponse>,
+                response: Response<CreatePointResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if (responseBody != null) {
+                        Log.e("Create Point", "BERHASIL")
+                    }
+                } else {
+                    Log.e("Create Point", "GAGAL")
+                }
+            }
+
+            override fun onFailure(call: Call<CreatePointResponse>, t: Throwable) {
+                Log.e("Create Point", "GAGAL")
+            }
+
+
+        })
     }
 
 

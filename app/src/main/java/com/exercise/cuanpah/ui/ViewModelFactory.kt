@@ -7,6 +7,9 @@ import com.exercise.cuanpah.di.Injection
 import com.exercise.cuanpah.ui.home.HomeViewModel
 import com.exercise.cuanpah.ui.login.LoginViewModel
 import com.exercise.cuanpah.ui.main.MainViewModel
+import com.exercise.cuanpah.ui.maps.MapsViewModel
+import com.exercise.cuanpah.ui.point.PointViewModel
+import com.exercise.cuanpah.ui.profile.ProfileViewModel
 
 import com.exercise.cuanpah.ui.register.RegisterViewModel
 
@@ -30,6 +33,12 @@ class ViewModelFactory(private val pref: UserPreference, private val token: Stri
             }
             modelClass.isAssignableFrom(MapsViewModel::class.java) -> {
                 MapsViewModel(Injection.provideRepository(token, pref)) as T
+            }
+            modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
+                ProfileViewModel(Injection.provideRepository(token, pref)) as T
+            }
+            modelClass.isAssignableFrom(PointViewModel::class.java) -> {
+                PointViewModel(Injection.provideRepository(token, pref)) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

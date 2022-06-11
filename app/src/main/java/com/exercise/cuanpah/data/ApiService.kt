@@ -2,10 +2,7 @@ package com.exercise.cuanpah.data
 
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 data class RegisterResponse(
     @field:SerializedName("message")
@@ -46,6 +43,30 @@ data class OrderResponse(
     val data:OrderResponseData
 )
 
+data class GetPointResponse(
+    @field:SerializedName("message")
+    val message: String,
+
+    @field:SerializedName("data")
+    val data: List<GetPointDataResponse>
+)
+
+data class GetPointDataResponse(
+    @field:SerializedName("userPointsId")
+    val userPointsId: Int,
+
+    @field:SerializedName("userId")
+    val userId: Int,
+
+    @field:SerializedName("points")
+    val points: Int
+)
+
+data class CreatePointResponse(
+    @field:SerializedName("message")
+    val message: String
+)
+
 
 interface ApiService {
 
@@ -60,6 +81,12 @@ interface ApiService {
 
     @GET("/requests")
     fun getOrder(@Field("user") user:Int) : Call<OrderResponse>
+
+    @GET("/userPoints")
+    fun getPoint(@Query("userId") userId: Int) : Call<GetPointResponse>
+
+    @POST("/userPoints")
+    fun createPoint(@Body createPointData: CreatePointData) : Call<CreatePointResponse>
 
 }
 
@@ -94,4 +121,9 @@ data class OrderResponseData(
     val pickup_time:String,
     val wasteWeight: Double,
     val wasteType: String
+)
+
+data class CreatePointData(
+    val userId: Int,
+    val points: Int
 )
