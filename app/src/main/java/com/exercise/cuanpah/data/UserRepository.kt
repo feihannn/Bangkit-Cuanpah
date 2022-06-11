@@ -30,12 +30,6 @@ class UserRepository(
         }
     }
 
-    fun saveUser(user: UserModel) {
-        CoroutineScope(Dispatchers.IO).launch {
-            pref.saveUser(user)
-        }
-    }
-
     fun logout() {
         CoroutineScope(Dispatchers.IO).launch {
             pref.logout()
@@ -49,7 +43,7 @@ class UserRepository(
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
-                        login(UserModel(responseBody.name, responseBody.email, "", true, responseBody.token))
+                        login(UserModel(responseBody.name, responseBody.email, "", true, responseBody.token, responseBody.id))
                         message.value = response.code().toString()
                         Log.e("Login", responseBody.message)
                     }
@@ -76,7 +70,6 @@ class UserRepository(
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
-                        saveUser(UserModel(name, email, password, false, ""))
                         message.value = response.code().toString()
                         Log.e("Register", responseBody.message)
                     }

@@ -1,10 +1,7 @@
 package com.exercise.cuanpah.data
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -17,26 +14,20 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
                 preferences[EMAIL_KEY] ?:"",
                 preferences[PASSWORD_KEY] ?:"",
                 preferences[STATE_KEY] ?: false,
-                preferences[TOKEN] ?:""
+                preferences[TOKEN] ?:"",
+                preferences[ID] ?:0
             )
-        }
-    }
-
-    suspend fun saveUser(user: UserModel) {
-        dataStore.edit { preferences ->
-            preferences[NAME_KEY] = user.name
-            preferences[EMAIL_KEY] = user.email
-            preferences[PASSWORD_KEY] = user.password
-            preferences[STATE_KEY] = user.isLogin
-            preferences[TOKEN] = user.token
         }
     }
 
     suspend fun login(user: UserModel) {
         dataStore.edit { preferences ->
             preferences[NAME_KEY] = user.name
+            preferences[EMAIL_KEY] = user.email
+            preferences[PASSWORD_KEY] = user.password
             preferences[STATE_KEY] = user.isLogin
             preferences[TOKEN] = user.token
+            preferences[ID] = user.id
         }
     }
 
@@ -56,6 +47,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         private val PASSWORD_KEY = stringPreferencesKey("password")
         private val STATE_KEY = booleanPreferencesKey("state")
         private val TOKEN = stringPreferencesKey("token")
+        private val ID = intPreferencesKey("id")
 
         fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
             return INSTANCE ?: synchronized(this) {
