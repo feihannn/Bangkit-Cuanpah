@@ -20,6 +20,7 @@ import com.exercise.cuanpah.ui.ViewModelFactory
 import com.exercise.cuanpah.ui.main.MainActivity
 import com.exercise.cuanpah.ui.register.RegisterActivity
 
+
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class LoginActivity : AppCompatActivity() {
