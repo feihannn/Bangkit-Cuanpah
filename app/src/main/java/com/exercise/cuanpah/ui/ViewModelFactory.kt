@@ -7,7 +7,7 @@ import com.exercise.cuanpah.di.Injection
 import com.exercise.cuanpah.ui.home.HomeViewModel
 import com.exercise.cuanpah.ui.login.LoginViewModel
 import com.exercise.cuanpah.ui.main.MainViewModel
-import com.exercise.cuanpah.ui.maps.MapsViewModel
+
 import com.exercise.cuanpah.ui.register.RegisterViewModel
 
 class ViewModelFactory(private val pref: UserPreference, private val token: String) :
