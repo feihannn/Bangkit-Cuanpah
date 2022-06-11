@@ -15,7 +15,8 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
                 preferences[PASSWORD_KEY] ?:"",
                 preferences[STATE_KEY] ?: false,
                 preferences[TOKEN] ?:"",
-                preferences[ID] ?:0
+                preferences[ID] ?:0,
+                preferences[POINT] ?:0
             )
         }
     }
@@ -28,6 +29,12 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
             preferences[STATE_KEY] = user.isLogin
             preferences[TOKEN] = user.token
             preferences[ID] = user.id
+        }
+    }
+
+    suspend fun savePoint(point: Int) {
+        dataStore.edit { preferences ->
+            preferences[POINT] = point
         }
     }
 
@@ -48,6 +55,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         private val STATE_KEY = booleanPreferencesKey("state")
         private val TOKEN = stringPreferencesKey("token")
         private val ID = intPreferencesKey("id")
+        private val POINT = intPreferencesKey("point")
 
         fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
             return INSTANCE ?: synchronized(this) {
