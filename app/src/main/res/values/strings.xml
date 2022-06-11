@@ -34,6 +34,10 @@
 
         ]]>
     </string>
+    <string name="logout">Logout</string>
+    <string name="your_point">Your Point</string>
+    <string name="_0">0</string>
+    <string name="see_all_vouchers">See All Vouchers!</string>
     <string-array name="trash_array">
         <item>Pilih Jenis Sampah</item>
         <item>Glass</item>
