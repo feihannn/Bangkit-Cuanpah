@@ -32,6 +32,21 @@ class PointFragment : Fragment() {
     ): View {
         _binding = FragmentPointBinding.inflate(inflater, container, false)
 
+        setupAction()
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupAction()
+    }
+
+    private fun setupAction() {
         pointViewModel = ViewModelProvider(
             this,
             ViewModelFactory(UserPreference.getInstance(requireContext().dataStore), "")
@@ -39,13 +54,8 @@ class PointFragment : Fragment() {
 
         pointViewModel.getUser().observe(requireActivity()) {
             pointViewModel.getPoint(it.id)
+
+            binding.point.text = it.point.toString()
         }
-
-        return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

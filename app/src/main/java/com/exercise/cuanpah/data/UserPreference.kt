@@ -29,6 +29,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
             preferences[STATE_KEY] = user.isLogin
             preferences[TOKEN] = user.token
             preferences[ID] = user.id
+            preferences[POINT] = user.point
         }
     }
 
@@ -40,8 +41,13 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
 
     suspend fun logout() {
         dataStore.edit { preferences ->
+            preferences[NAME_KEY] = ""
+            preferences[EMAIL_KEY] = ""
+            preferences[PASSWORD_KEY] = ""
             preferences[STATE_KEY] = false
             preferences[TOKEN] = ""
+            preferences[ID] = 0
+            preferences[POINT] = 0
         }
     }
 
