@@ -114,7 +114,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
         }
-        
+
         //Setting hint for edit text
         binding.lokasiAndaPlaceholder.hint = "Cari lokasi Anda"
         binding.beratInputText.hint="Berat Sampah"
