@@ -70,7 +70,7 @@ class PointFragment : Fragment() {
                         }
                     }
                 }
-                Thread.sleep(1000)
+                Thread.sleep(30000)
             }
         }.start()
     }
