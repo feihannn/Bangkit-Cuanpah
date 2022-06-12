@@ -122,10 +122,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     val responseBody=response.body()
                     if(responseBody!=null){
                         HomeFragment.ORDERED=true
+                        MapsStatusActivity.LAT=latGlobal
+                        MapsStatusActivity.LONG=lonGlobal
                         startActivity(Intent(this@MapsActivity,MapsStatusActivity::class.java))
                         Toast.makeText(this@MapsActivity,"$responseBody",Toast.LENGTH_SHORT).show()
                         MapsStatusActivity.DRIVERNAME=responseBody.data.driverName
-                        MapsStatusActivity.STATUS=responseBody.data.status
+                        MapsStatusActivity.STATUS="Ongoing"
                         MapsStatusActivity.PICKUPTIME=responseBody.data.pickup_time
                         finish()
                     }
@@ -143,28 +145,28 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         })
     }
 
-    override fun onResume() {
-        super.onResume()
-        if(hasOrdered){
-            binding_status = ActivityMapsStatusBinding.inflate(layoutInflater)
-            setContentView(binding_status.root)
-            val mapFragment = supportFragmentManager
-                .findFragmentById(com.exercise.cuanpah.R.id.mapCheck) as SupportMapFragment
-            mapFragment.getMapAsync(this)
-            @Suppress("DEPRECATION")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                window.insetsController?.hide(WindowInsets.Type.statusBars())
-            } else {
-                window.setFlags(
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN
-                )
-            }
-            supportActionBar?.hide()
-        }
-
-
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        if(hasOrdered){
+//            binding_status = ActivityMapsStatusBinding.inflate(layoutInflater)
+//            setContentView(binding_status.root)
+//            val mapFragment = supportFragmentManager
+//                .findFragmentById(com.exercise.cuanpah.R.id.mapCheck) as SupportMapFragment
+//            mapFragment.getMapAsync(this)
+//            @Suppress("DEPRECATION")
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+//                window.insetsController?.hide(WindowInsets.Type.statusBars())
+//            } else {
+//                window.setFlags(
+//                    WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                    WindowManager.LayoutParams.FLAG_FULLSCREEN
+//                )
+//            }
+//            supportActionBar?.hide()
+//        }
+//
+//
+//    }
 
     private fun setupView() {
         @Suppress("DEPRECATION")

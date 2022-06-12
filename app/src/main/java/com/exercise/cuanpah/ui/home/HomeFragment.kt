@@ -44,7 +44,8 @@ class HomeFragment : Fragment() {
         binding.panggilKurirButton.setOnClickListener {
             if(!ORDERED){
                 startActivity(Intent(context,MapsActivity::class.java))
-            }else{
+            }else if(ORDERED&& COUNT==1){
+                MapsStatusActivity.STATUS="Completed"
                 startActivity(Intent(context,MapsStatusActivity::class.java))
             }
         }
@@ -79,8 +80,11 @@ class HomeFragment : Fragment() {
                     }
 
                     binding.panggilKurirButton.setOnClickListener {
-                        startActivity(Intent(context, MapsActivity::class.java))
-                    }
+                        if(!ORDERED){
+                            startActivity(Intent(context,MapsActivity::class.java))
+                        }else{
+                            startActivity(Intent(context,MapsStatusActivity::class.java))
+                        }                    }
 
                     binding.pindaiSampahButton.setOnClickListener {
                         startActivity(Intent(context, CameraActivity::class.java))
@@ -92,6 +96,7 @@ class HomeFragment : Fragment() {
     }
     companion object{
         var ORDERED=false
+        var COUNT=0
     }
 }
 

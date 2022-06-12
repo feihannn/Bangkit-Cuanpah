@@ -80,7 +80,7 @@ interface ApiService {
     fun requestOrder(@Body orderData: OrderData) : Call<OrderResponse>
 
     @GET("/requests")
-    fun getOrder(@Field("user") user:Int) : Call<OrderResponse>
+    fun getOrder(@Path("user") user:Int) : Call<OrderResponse>
 
     @GET("/userPoints/{userId}")
     fun getPoint(@Path("userId") userId: Int) : Call<GetPointResponse>
