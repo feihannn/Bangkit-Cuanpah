@@ -120,7 +120,8 @@ data class OrderResponseData(
     val request_time:String,
     val pickup_time:String,
     val wasteWeight: Double,
-    val wasteType: String
+    val wasteType: String,
+    val driverName:String
 )
 
 data class CreatePointData(

@@ -19,6 +19,7 @@ import com.exercise.cuanpah.databinding.FragmentHomeBinding
 import com.exercise.cuanpah.ui.ViewModelFactory
 import com.exercise.cuanpah.ui.main.MainActivity
 import com.exercise.cuanpah.ui.maps.MapsActivity
+import com.exercise.cuanpah.ui.maps.MapsStatusActivity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -40,7 +41,17 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         setupAction()
+        binding.panggilKurirButton.setOnClickListener {
+            if(!ORDERED){
+                startActivity(Intent(context,MapsActivity::class.java))
+            }else{
+                startActivity(Intent(context,MapsStatusActivity::class.java))
+            }
+        }
 
+        binding.pindaiSampahButton.setOnClickListener {
+            startActivity(Intent(context, CameraActivity::class.java))
+        }
         return binding.root
     }
 
@@ -79,6 +90,8 @@ class HomeFragment : Fragment() {
             }
         }.start()
     }
-
-
+    companion object{
+        var ORDERED=false
+    }
 }
+
