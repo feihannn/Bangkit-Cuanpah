@@ -1,6 +1,7 @@
 package com.exercise.cuanpah.ui.maps
 
 import android.content.Context
+import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
@@ -21,7 +22,9 @@ import com.exercise.cuanpah.data.OrderData
 import com.exercise.cuanpah.data.OrderResponse
 import com.exercise.cuanpah.data.UserPreference
 import com.exercise.cuanpah.databinding.ActivityMapsBinding
+import com.exercise.cuanpah.databinding.ActivityMapsStatusBinding
 import com.exercise.cuanpah.ui.ViewModelFactory
+import com.exercise.cuanpah.ui.home.HomeFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -41,10 +44,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+    private lateinit var binding_status :ActivityMapsStatusBinding
     private lateinit var searchView:SearchView
     private lateinit var mapsViewModel: MapsViewModel
     private var latGlobal :Double=0.0
     private var lonGlobal :Double=0.0
+    private var hasOrdered:Boolean=false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,11 +61,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             ViewModelFactory(UserPreference.getInstance(dataStore), "")
         )[MapsViewModel::class.java]
 
-
-
+        binding_status=ActivityMapsStatusBinding.inflate(layoutInflater)
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupView()
+
 
         searchView = binding.searchLokasi
 
@@ -94,7 +99,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 return false
             }
         })
-
         binding.pesanKurirButton.setOnClickListener { order() }
     }
 
@@ -117,7 +121,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 if(response.isSuccessful){
                     val responseBody=response.body()
                     if(responseBody!=null){
+                        HomeFragment.ORDERED=true
+                        MapsStatusActivity.LAT=latGlobal
+                        MapsStatusActivity.LONG=lonGlobal
+                        startActivity(Intent(this@MapsActivity,MapsStatusActivity::class.java))
                         Toast.makeText(this@MapsActivity,"$responseBody",Toast.LENGTH_SHORT).show()
+                        MapsStatusActivity.DRIVERNAME=responseBody.data.driverName
+                        MapsStatusActivity.STATUS="Ongoing"
+                        MapsStatusActivity.PICKUPTIME=responseBody.data.pickup_time
+                        finish()
                     }
                 }else{
                     Toast.makeText(this@MapsActivity,"responsenya gagal",Toast.LENGTH_SHORT).show()
@@ -133,25 +145,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         })
     }
 
-//    private val requestPermissionLauncher =
-//        registerForActivityResult(
-//            ActivityResultContracts.RequestPermission()
-//        ) { isGranted: Boolean ->
-//            if (isGranted) {
-//                getMyLocation()
+//    override fun onResume() {
+//        super.onResume()
+//        if(hasOrdered){
+//            binding_status = ActivityMapsStatusBinding.inflate(layoutInflater)
+//            setContentView(binding_status.root)
+//            val mapFragment = supportFragmentManager
+//                .findFragmentById(com.exercise.cuanpah.R.id.mapCheck) as SupportMapFragment
+//            mapFragment.getMapAsync(this)
+//            @Suppress("DEPRECATION")
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+//                window.insetsController?.hide(WindowInsets.Type.statusBars())
+//            } else {
+//                window.setFlags(
+//                    WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                    WindowManager.LayoutParams.FLAG_FULLSCREEN
+//                )
 //            }
+//            supportActionBar?.hide()
 //        }
-//    private fun getMyLocation() {
-//        if (ContextCompat.checkSelfPermission(
-//                this.applicationContext,
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            ) == PackageManager.PERMISSION_GRANTED
-//        ) {
-//            mMap.isMyLocationEnabled = true
 //
-//        } else {
-//            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-//        }
+//
 //    }
 
     private fun setupView() {
@@ -192,4 +206,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 //        getMyLocation()
     }
+
+    //    private val requestPermissionLauncher =
+//        registerForActivityResult(
+//            ActivityResultContracts.RequestPermission()
+//        ) { isGranted: Boolean ->
+//            if (isGranted) {
+//                getMyLocation()
+//            }
+//        }
+//    private fun getMyLocation() {
+//        if (ContextCompat.checkSelfPermission(
+//                this.applicationContext,
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) == PackageManager.PERMISSION_GRANTED
+//        ) {
+//            mMap.isMyLocationEnabled = true
+//
+//        } else {
+//            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+//        }
+//    }
 }

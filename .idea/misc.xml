@@ -10,18 +10,18 @@
         <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/drawable/rounded_edittext.xml" value="0.185" />
         <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/layout/activity_main.xml" value="0.176" />
-        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/layout/activity_maps.xml" value="0.18342391304347827" />
         <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/layout/activity_register.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/layout/activity_splash.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/layout/fragment_dashboard.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/layout/fragment_notifications.xml" value="0.22826086956521738" />
-        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/layout/fragment_point.xml" value="0.2658514492753623" />
-        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
-        <entry key="..\:/Users/nicho/OneDrive/Desktop/Bangkit/Cuanpah/Bangkit-Cuanpah/app/src/main/res/menu/bottom_nav_menu.xml" value="0.27447916666666666" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2776268115942029" />
+        <entry key="app/src/main/res/layout/activity_map_status.xml" value="0.29635416666666664" />
         <entry key="app/src/main/res/layout/activity_maps.xml" value="0.20311611343479757" />
+        <entry key="app/src/main/res/layout/activity_maps_status.xml" value="0.22010869565217392" />
+        <entry key="app/src/main/res/layout/fragment_point.xml" value="0.24635416666666668" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.24635416666666668" />
       </map>
     </option>
   </component>

@@ -80,7 +80,7 @@ interface ApiService {
     fun requestOrder(@Body orderData: OrderData) : Call<OrderResponse>
 
     @GET("/requests")
-    fun getOrder(@Field("user") user:Int) : Call<OrderResponse>
+    fun getOrder(@Path("user") user:Int) : Call<OrderResponse>
 
     @GET("/userPoints/{userId}")
     fun getPoint(@Path("userId") userId: Int) : Call<GetPointResponse>
@@ -120,7 +120,8 @@ data class OrderResponseData(
     val request_time:String,
     val pickup_time:String,
     val wasteWeight: Double,
-    val wasteType: String
+    val wasteType: String,
+    val driverName:String
 )
 
 data class CreatePointData(
