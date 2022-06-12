@@ -75,7 +75,7 @@ class HomeFragment : Fragment() {
                         startActivity(Intent(context, CameraActivity::class.java))
                     }
                 }
-                Thread.sleep(1000)
+                Thread.sleep(30000)
             }
         }.start()
     }
