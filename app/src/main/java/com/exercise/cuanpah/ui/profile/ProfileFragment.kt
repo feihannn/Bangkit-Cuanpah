@@ -3,6 +3,7 @@ package com.exercise.cuanpah.ui.profile
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,12 +45,14 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupAction() {
+
         profileViewModel = ViewModelProvider(
             this,
             ViewModelFactory(UserPreference.getInstance(requireContext().dataStore), "")
         )[ProfileViewModel::class.java]
 
         profileViewModel.getUser().observe(requireActivity()) {
+            Log.e("PROFILE", it.name)
             binding.profileName.text = it.name
         }
 

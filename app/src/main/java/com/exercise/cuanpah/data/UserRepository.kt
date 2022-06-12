@@ -98,15 +98,16 @@ class UserRepository(
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody!=null) {
-                        if (responseBody.data[0].points == 0) {
+                        if (responseBody.data.isEmpty()) {
                             savePoint(0)
                             createPoint(userId, 0)
+                            message.value = response.code().toString()
                             Log.e("POINT", responseBody.data[0].points.toString())
                         } else {
                             savePoint(responseBody.data[0].points)
+                            message.value = response.code().toString()
                             Log.e("POINT", responseBody.data[0].points.toString())
                         }
-                        message.value = response.code().toString()
                     }
                 }
             }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import com.exercise.cuanpah.camera.CameraActivity
 import com.exercise.cuanpah.data.UserPreference
 import com.exercise.cuanpah.databinding.FragmentHomeBinding
 import com.exercise.cuanpah.ui.ViewModelFactory
+import com.exercise.cuanpah.ui.main.MainActivity
 import com.exercise.cuanpah.ui.maps.MapsActivity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -28,6 +30,7 @@ class HomeFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+//    private val binding get() = _binding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,14 +41,6 @@ class HomeFragment : Fragment() {
 
         setupAction()
 
-        binding.panggilKurirButton.setOnClickListener {
-            startActivity(Intent(context,MapsActivity::class.java))
-        }
-
-        binding.pindaiSampahButton.setOnClickListener {
-            startActivity(Intent(context, CameraActivity::class.java))
-        }
-
         return binding.root
     }
 
@@ -54,21 +49,36 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    override fun onResume() {
-        super.onResume()
-        setupAction()
-    }
-
     @SuppressLint("SetTextI18n")
     private fun setupAction() {
-        homeViewModel = ViewModelProvider(
-            this,
-            ViewModelFactory(UserPreference.getInstance(requireContext().dataStore), "")
-        )[HomeViewModel::class.java]
+        Thread {
+            while (_binding !=null) {
+                val binding = _binding ?: break
+                val a = activity as? MainActivity ?:break
 
-        homeViewModel.getUser().observe(requireActivity()) {
-            binding.greetings.text = "Hello, ${it.name}"
-        }
+                a.runOnUiThread {
+                    homeViewModel = ViewModelProvider(
+                        this,
+                        ViewModelFactory(UserPreference.getInstance(requireContext().dataStore), "")
+                    )[HomeViewModel::class.java]
 
+                    homeViewModel.getUser().observe(requireActivity()) {
+                        Log.e("HOME", it.name)
+                        binding.greetings.text = "Hello, ${it.name}"
+                    }
+
+                    binding.panggilKurirButton.setOnClickListener {
+                        startActivity(Intent(context, MapsActivity::class.java))
+                    }
+
+                    binding.pindaiSampahButton.setOnClickListener {
+                        startActivity(Intent(context, CameraActivity::class.java))
+                    }
+                }
+                Thread.sleep(1000)
+            }
+        }.start()
     }
+
+
 }

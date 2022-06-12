@@ -2,6 +2,7 @@ package com.exercise.cuanpah.ui.point
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.exercise.cuanpah.data.UserPreference
 import com.exercise.cuanpah.databinding.FragmentPointBinding
 import com.exercise.cuanpah.ui.ViewModelFactory
+import com.exercise.cuanpah.ui.main.MainActivity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -41,21 +43,36 @@ class PointFragment : Fragment() {
         _binding = null
     }
 
-    override fun onResume() {
-        super.onResume()
-        setupAction()
-    }
-
     private fun setupAction() {
-        pointViewModel = ViewModelProvider(
-            this,
-            ViewModelFactory(UserPreference.getInstance(requireContext().dataStore), "")
-        )[PointViewModel::class.java]
+        Thread {
+            while (_binding != null) {
+                val binding = _binding ?:break
+                val a = activity as? MainActivity ?:break
 
-        pointViewModel.getUser().observe(requireActivity()) {
-            pointViewModel.getPoint(it.id)
+                a.runOnUiThread {
+                    pointViewModel = ViewModelProvider(
+                        this,
+                        ViewModelFactory(UserPreference.getInstance(requireContext().dataStore), "")
+                    )[PointViewModel::class.java]
 
-            binding.point.text = it.point.toString()
-        }
+                    pointViewModel.getUser().observe(requireActivity()) { user ->
+                        Log.e("POINT", user.toString())
+                        pointViewModel.getPoint(user.id).observe(requireActivity()) {
+                            when (it) {
+                                "200" -> {
+                                    Log.e("PointFragment", "OK")
+                                    binding.point.text = user.point.toString()
+                                }
+                                else -> {
+                                    Log.e("PointFragment", "Error")
+                                }
+                            }
+                        }
+                    }
+                }
+                Thread.sleep(1000)
+            }
+        }.start()
     }
+
 }
