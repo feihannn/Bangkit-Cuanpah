@@ -63,6 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Pick Up Time"
+                android:textSize="10sp"
                 map:layout_constraintBottom_toBottomOf="@+id/avatarImage"
                 map:layout_constraintStart_toStartOf="@+id/namaDriverPlaceholder"
                 map:layout_constraintTop_toTopOf="@+id/avatarImage" />
