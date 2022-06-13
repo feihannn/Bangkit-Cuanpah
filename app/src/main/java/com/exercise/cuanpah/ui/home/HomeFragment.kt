@@ -41,18 +41,6 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         setupAction()
-        binding.panggilKurirButton.setOnClickListener {
-            if(!ORDERED){
-                startActivity(Intent(context,MapsActivity::class.java))
-            }else if(ORDERED&& COUNT==1){
-                MapsStatusActivity.STATUS="Completed"
-                startActivity(Intent(context,MapsStatusActivity::class.java))
-            }
-        }
-
-        binding.pindaiSampahButton.setOnClickListener {
-            startActivity(Intent(context, CameraActivity::class.java))
-        }
         return binding.root
     }
 
@@ -96,7 +84,6 @@ class HomeFragment : Fragment() {
     }
     companion object{
         var ORDERED=false
-        var COUNT=0
     }
 }
 

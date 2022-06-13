@@ -43,6 +43,14 @@ data class OrderResponse(
     val data:OrderResponseData
 )
 
+data class OrderGetResponse(
+    @field:SerializedName("status")
+    val status: String,
+
+    @field:SerializedName("data")
+    val data:List<OrderResponseData>
+)
+
 data class GetPointResponse(
     @field:SerializedName("message")
     val message: String,
@@ -80,7 +88,7 @@ interface ApiService {
     fun requestOrder(@Body orderData: OrderData) : Call<OrderResponse>
 
     @GET("/requests")
-    fun getOrder(@Path("user") user:Int) : Call<OrderResponse>
+    fun getOrder(@Query("user") user:Int) : Call<OrderGetResponse>
 
     @GET("/userPoints/{userId}")
     fun getPoint(@Path("userId") userId: Int) : Call<GetPointResponse>

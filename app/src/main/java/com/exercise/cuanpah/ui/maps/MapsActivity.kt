@@ -49,8 +49,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mapsViewModel: MapsViewModel
     private var latGlobal :Double=0.0
     private var lonGlobal :Double=0.0
-    private var hasOrdered:Boolean=false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         var marker:Marker?=null
@@ -84,14 +82,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
-                val address = addressList!![0]
+                if (addressList != null) {
+                    if(addressList.isNotEmpty()){
+                        val address = addressList[0]
 
-                marker?.remove()
-                val latLng = LatLng(address.latitude, address.longitude)
-                latGlobal=address.latitude
-                lonGlobal=address.longitude
-                marker=mMap.addMarker(MarkerOptions().position(latLng).title(location))
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
+                        marker?.remove()
+                        val latLng = LatLng(address.latitude, address.longitude)
+                        latGlobal=address.latitude
+                        lonGlobal=address.longitude
+                        marker=mMap.addMarker(MarkerOptions().position(latLng).title(location))
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
+                    }else{
+                        Toast.makeText(this@MapsActivity, "Lokasi tidak ditemukan",Toast.LENGTH_SHORT).show()
+                    }
+                }
+
                 return false
             }
 
@@ -108,65 +113,51 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             userId= it.id
         }
         val selectedTrash=binding.jenisSampahDropdown.selectedItem.toString()
-        val inputWeight=binding.beratInputText.text.toString().toDouble()
+        if (binding.beratInputText.text.toString().isEmpty()){
+            Toast.makeText(this,"Masukkan berat sampah!",Toast.LENGTH_SHORT).show()
+        }else{
+            val inputWeight=binding.beratInputText.text.toString().toDouble()
+            Toast.makeText(this@MapsActivity,"Mohon Menunggu",Toast.LENGTH_SHORT).show()
 
-        Toast.makeText(this@MapsActivity,"$userId",Toast.LENGTH_SHORT).show()
+            if((latGlobal==0.0)||(lonGlobal==0.0)){
+                Toast.makeText(this,"Masukkan Lokasi",Toast.LENGTH_SHORT).show()
+            }else{
+                val orderService=ApiConfig().getApiService().requestOrder(OrderData(userId,2,latGlobal,lonGlobal,"completed",inputWeight,selectedTrash))
+                orderService.enqueue(object : Callback<OrderResponse>{
+                    override fun onResponse(
+                        call: Call<OrderResponse>,
+                        response: Response<OrderResponse>
+                    ) {
+                        if(response.isSuccessful){
+                            val responseBody=response.body()
+                            if(responseBody!=null){
+                                HomeFragment.ORDERED=true
+                                MapsStatusActivity.LAT=latGlobal
+                                MapsStatusActivity.LONG=lonGlobal
+                                startActivity(Intent(this@MapsActivity,MapsStatusActivity::class.java))
+                                MapsStatusActivity.DRIVERNAME=responseBody.data.driverName
+                                MapsStatusActivity.DRIVERID=responseBody.data.driverId
+                                MapsStatusActivity.STATUS="Ongoing"
+                                MapsStatusActivity.PICKUPTIME=responseBody.data.pickup_time
+                                finish()
+                            }
+                        }else{
+                            Toast.makeText(this@MapsActivity,"responsenya gagal",Toast.LENGTH_SHORT).show()
 
-        val orderService=ApiConfig().getApiService().requestOrder(OrderData(userId,2,latGlobal,lonGlobal,"completed",inputWeight,selectedTrash))
-        orderService.enqueue(object : Callback<OrderResponse>{
-            override fun onResponse(
-                call: Call<OrderResponse>,
-                response: Response<OrderResponse>
-            ) {
-                if(response.isSuccessful){
-                    val responseBody=response.body()
-                    if(responseBody!=null){
-                        HomeFragment.ORDERED=true
-                        MapsStatusActivity.LAT=latGlobal
-                        MapsStatusActivity.LONG=lonGlobal
-                        startActivity(Intent(this@MapsActivity,MapsStatusActivity::class.java))
-                        Toast.makeText(this@MapsActivity,"$responseBody",Toast.LENGTH_SHORT).show()
-                        MapsStatusActivity.DRIVERNAME=responseBody.data.driverName
-                        MapsStatusActivity.STATUS="Ongoing"
-                        MapsStatusActivity.PICKUPTIME=responseBody.data.pickup_time
-                        finish()
+                        }
+
                     }
-                }else{
-                    Toast.makeText(this@MapsActivity,"responsenya gagal",Toast.LENGTH_SHORT).show()
 
-                }
+                    override fun onFailure(call: Call<OrderResponse>, t: Throwable) {
+                        Toast.makeText(this@MapsActivity,"Gagal",Toast.LENGTH_SHORT).show()
+                    }
 
+                })
             }
 
-            override fun onFailure(call: Call<OrderResponse>, t: Throwable) {
-                Toast.makeText(this@MapsActivity,"Gagal",Toast.LENGTH_SHORT).show()
-            }
+        }
 
-        })
     }
-
-//    override fun onResume() {
-//        super.onResume()
-//        if(hasOrdered){
-//            binding_status = ActivityMapsStatusBinding.inflate(layoutInflater)
-//            setContentView(binding_status.root)
-//            val mapFragment = supportFragmentManager
-//                .findFragmentById(com.exercise.cuanpah.R.id.mapCheck) as SupportMapFragment
-//            mapFragment.getMapAsync(this)
-//            @Suppress("DEPRECATION")
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-//                window.insetsController?.hide(WindowInsets.Type.statusBars())
-//            } else {
-//                window.setFlags(
-//                    WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                    WindowManager.LayoutParams.FLAG_FULLSCREEN
-//                )
-//            }
-//            supportActionBar?.hide()
-//        }
-//
-//
-//    }
 
     private fun setupView() {
         @Suppress("DEPRECATION")
@@ -204,27 +195,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.uiSettings.isIndoorLevelPickerEnabled = true
 
-//        getMyLocation()
     }
 
-    //    private val requestPermissionLauncher =
-//        registerForActivityResult(
-//            ActivityResultContracts.RequestPermission()
-//        ) { isGranted: Boolean ->
-//            if (isGranted) {
-//                getMyLocation()
-//            }
-//        }
-//    private fun getMyLocation() {
-//        if (ContextCompat.checkSelfPermission(
-//                this.applicationContext,
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            ) == PackageManager.PERMISSION_GRANTED
-//        ) {
-//            mMap.isMyLocationEnabled = true
-//
-//        } else {
-//            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-//        }
-//    }
 }
